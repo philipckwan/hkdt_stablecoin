@@ -4,11 +4,11 @@ A project with solidity smart contracts on a ERC-20 token, HKDT for Hong Kong Do
 
 ## Prerequisite for development setup
 
-### 1. Install [Node.js](https://nodejs.org/en/) as this project requires "npm" and "npx" commands
+1. Install [Node.js](https://nodejs.org/en/) as this project requires "npm" and "npx" commands
 
-### 2. Install [Truffle](https://trufflesuite.com/) as this project requires "truffle", "truffle console" and "truffle dashboard" commands 
+2. Install [Truffle](https://trufflesuite.com/) as this project requires "truffle", "truffle console" and "truffle dashboard" commands 
 
-### 3. Install [Git](https://git-scm.com/downloads) as this project is stored in github, it requires "git" command to pull the source code easily
+3. Install [Git](https://git-scm.com/downloads) as this project is stored in github, it requires "git" command to pull the source code easily
 
 Run the following command.
 
@@ -43,7 +43,7 @@ Run the "truffle dashboard" to start a dashboard server at localhost:24012.
 truffle dashboard
 ```
 
-It will open a browser page that points to "localhost:24012". You will be able to connect your browser wallet (i.e. Metamask) to it.
+It will open a browser page that points to "localhost:24012". You will be able to connect your browser wallet (i.e. Metamask) to it.<br/>
 Ensure you pick the right network (i.e. Ethereum Goerli) and use the right account when making the connection.
 
 ### 4. Run Truffle Console to connect to the Truffle Dashboard
@@ -56,7 +56,7 @@ truffle console --network dashboard
 
 ## Compile and Deploy cycle
 
-Once you have successfully done the above setup, you can perform the development cycle where you compile and deploy the smart contract.
+Once you have successfully done the above setup, you can perform the development cycle where you compile and deploy the smart contract.<br/>
 Using the Truffle Console that was started in the previous step:
 
 ```bash
@@ -75,7 +75,7 @@ truffle(dashboard)> hkdt = new HKDT("0x83a9250121b87ffa80851d8b776b336d74c54f39"
 
 ## Testing the deployed smart contract
 
-Here list a few commands that you can try and test the contract deployed.
+Here list a few commands that you can try and test the contract deployed.<br/>
 For more examples, see notes/notes.txt
 
 This command call the view function "name" to get the name of the token.
