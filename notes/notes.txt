@@ -1,0 +1,100 @@
+development project setup:
+
+-start with truffle init (assume truffle is already installed):
+$ npx truffle init
+
+-then, create the contract template
+$ truffle create contract HKDT
+
+-install openzeppelin contracts to leverage its token templates
+$ npm install @openzeppelin/contracts
+
+The ERC20 token contract is located at node_modules/@openzeppelin/contracts/token/ERC20
+
+-then, start updating my contract source code at HKDT.sol, and compile with:
+$ truffle compile
+
+-once the contract able to compile successfully, run "truffle dashboard" to start a dashboard server at localhost:24012
+from a terminal:
+$ truffle dashboard
+
+-also start a truffle console to interact with interact
+from another terminal:
+$ truffle console --network dashboard
+truffle(dashboard)> 
+
+-do some quick checking to ensure i am connecting to the testnet:
+truffle(dashboard)> myAccount = (await web3.eth.getAccounts())[0]
+'0x08A3dF752EcbBe75259E3A2f1aeDe0578bB3119e'
+truffle(dashboard)> await web3.utils.fromWei(await web3.eth.getBalance(myAccount))
+'10.591254165408727936'
+truffle(dashboard)> await web3.eth.getBlockNumber()
+8425266
+truffle(dashboard)> await web3.eth.getChainId()
+5
+
+
+-next, try to deploy my contract
+need to ensure that the deployer script is available and set up properly at:
+migrations/1_deploy_contracts.js
+
+truffle(dashboard)> truffle deploy
+then need to sign the txn from browser
+
+-get a handle on the deployed contract
+truffle(dashboard)> hkdt = await HKDT.deployed()
+
+-verify can call a view function from the contract
+truffle(dashboard)> hkdt.name()
+'Hong Kong Dollar Stablecoin'
+truffle(dashboard)> hkdt.symbol()
+'HKDT'
+truffle(dashboard)> hkdt.decimals()
+BN { negative: 0, words: [ 18, <1 empty item> ], length: 1, red: null }
+truffle(dashboard)> hkdt.getMessage()
+'this is HKDT v0.1'
+truffle(dashboard)> 
+
+-check balance
+truffle(dashboard)> (await hkdt.balanceOf(myAccount)).toNumber()
+0
+
+-then, continue to develop the contract and iterate with this compile, deploy and test cycles:
+> compile
+...
+> deploy (sign txn from browser)
+...
+> hkdt = await HKDT.deployed()
+...
+> hkdt.getMessage()
+'this is HKDT v0.2'
+
+-to send ETH to the hkdt contract and call the deposit function
+
+truffle(dashboard)> hkdt.deposit({value:13*10**15, from:myAccount})
+...
+
+truffle(dashboard)> (await hkdt.balanceOf(myAccount)).toString()
+'10114000000000000000'
+
+-to send HKDT and get back ETH, call the withdraw function
+hkdt.withdraw("6780000000000000000")
+
+-now that I added the fallback receive function, one can simply send ETH to the contract and it will automatically call the deposit function
+$ truffle-flattener contracts/HKDT.sol > hkdt_flattened_v0.13.sol
+
+-when publish and verify the smart contract on etherscan, need to use truffle-flattener to flatten the sode
+https://www.npmjs.com/package/truffle-flattener
+
+
+-to load the usdc contract
+usdcAddress = hkdt.getUSDCAddress();
+truffle(dashboard)> usdc = await (ERC20.at(await hkdt.getUSDCAddress()))
+...
+
+truffle(dashboard)> usdcDecimals = (await usdc.decimals()).toNumber()
+6
+truffle(dashboard)> usdcBalanceBN = (await usdc.balanceOf(myAccount)).toNumber()
+3802608478
+truffle(dashboard)> usdcBalance = usdcBalanceBN / ( 10 ** usdcDecimals)
+3802.608478
