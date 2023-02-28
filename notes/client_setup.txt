@@ -1,0 +1,27 @@
+The "client" folder contains the dApp to interact with the HKDT token contract.
+
+-------------------------
+to run:
+
+>cd client
+>npm start
+
+Ensure the contract addresses in src/EthersUtils.js are correct before running.
+
+-------------------------
+to setup after git clone:
+
+> cd client
+> npm install
+
+-------------------------
+to setup for first time:
+
+> pwd
+./dapp_hkdt
+
+> npx create-react-app client
+
+> cd client
+> npm install ethers@5.7.2
+> npm install buffer
